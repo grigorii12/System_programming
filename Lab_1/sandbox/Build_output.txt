@@ -1,0 +1,15 @@
+Linux codespaces-72e927 6.8.0-1064-azure #72~22.04.1-Ubuntu SMP Wed Jul 22 23:39:45 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
+2026-09-10T18:00:35+00:00
+fasm	1.73.32-1
+gcc	4:13.2.0-7ubuntu1
+gcc-multilib	4:13.2.0-7ubuntu1
+gdb	15.1-1ubuntu1~24.04.1
+libc6-dev-i386	2.39-0ubuntu8.9
+mc	3:4.8.30-1ubuntu0.1
+flat assembler  version 1.73.32  (16384 kilobytes memory)
+3 passes, 202 bytes.
+Прозоров:  ELF 32-bit LSB executable, Intel 80386, version 1 (GNU/Linux), statically linked, no section header
+C_version: ELF 32-bit LSB executable, Intel 80386, version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux.so.2, BuildID[sha1]=cd90e7b5f297ed27f35f0315efe1071f8051417e, for GNU/Linux 3.2.0, with debug_info, not stripped
+Прозоров
+Григорий
+Дмитриевич

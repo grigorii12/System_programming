@@ -1,0 +1,2 @@
+sudo apt-get update -qq
+sudo DEBIAN_FRONTEND=noninteractive apt-get install -y gcc gdb fasm mc gcc-multilib libc6-dev-i386

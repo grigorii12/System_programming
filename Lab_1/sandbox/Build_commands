@@ -1,0 +1,25 @@
+set -euo pipefail
+export LC_ALL=C.UTF-8
+cd sandbox
+uname -a
+date --iso-8601=seconds
+dpkg-query -W gcc gdb fasm mc gcc-multilib libc6-dev-i386
+fasm Прозоров.asm Прозоров
+chmod +x Прозоров
+gcc -m32 -g -O0 -fno-pie -no-pie -Wall -Wextra -Werror C_version.c -o C_version
+file Прозоров C_version
+./Прозоров > Assembly_output.txt
+./C_version > C_output.txt
+printf 'Прозоров\nГригорий\nДмитриевич\n' > Expected_output.txt
+cmp Expected_output.txt Assembly_output.txt
+cmp Expected_output.txt C_output.txt
+cat Assembly_output.txt
+entry=$(readelf -h Прозоров | awk '/Entry point address:/ {print $4}')
+{
+    printf '=== FASM: Прозоров (весь код, 31 байт) ===\n'
+    gdb -q -nx -batch -ex 'set debuginfod enabled off' -ex 'set disassembly-flavor intel' -ex starti -ex "disassemble /r $entry,$entry+31" ./Прозоров
+    printf '\n=== C: main ===\n'
+    gdb -q -nx -batch -ex 'set debuginfod enabled off' -ex 'set disassembly-flavor intel' -ex 'disassemble /r main' ./C_version
+    printf '\n=== C: _start ===\n'
+    gdb -q -nx -batch -ex 'set debuginfod enabled off' -ex 'set disassembly-flavor intel' -ex 'disassemble /r _start' ./C_version
+} > Disassemble

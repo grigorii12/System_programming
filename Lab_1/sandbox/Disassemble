@@ -1,0 +1,58 @@
+=== FASM: Прозоров (весь код, 31 байт) ===
+
+Program stopped.
+0x08048074 in ?? ()
+Dump of assembler code from 0x8048074 to 0x8048093:
+=> 0x08048074:	b8 04 00 00 00     	mov    eax,0x4
+   0x08048079:	bb 01 00 00 00     	mov    ebx,0x1
+   0x0804807e:	b9 93 90 04 08     	mov    ecx,0x8049093
+   0x08048083:	ba 37 00 00 00     	mov    edx,0x37
+   0x08048088:	cd 80              	int    0x80
+   0x0804808a:	b8 01 00 00 00     	mov    eax,0x1
+   0x0804808f:	31 db              	xor    ebx,ebx
+   0x08048091:	cd 80              	int    0x80
+End of assembler dump.
+
+=== C: main ===
+Dump of assembler code for function main:
+   0x08049166 <+0>:	8d 4c 24 04        	lea    ecx,[esp+0x4]
+   0x0804916a <+4>:	83 e4 f0           	and    esp,0xfffffff0
+   0x0804916d <+7>:	ff 71 fc           	push   DWORD PTR [ecx-0x4]
+   0x08049170 <+10>:	55                 	push   ebp
+   0x08049171 <+11>:	89 e5              	mov    ebp,esp
+   0x08049173 <+13>:	51                 	push   ecx
+   0x08049174 <+14>:	83 ec 04           	sub    esp,0x4
+   0x08049177 <+17>:	83 ec 0c           	sub    esp,0xc
+   0x0804917a <+20>:	68 08 a0 04 08     	push   0x804a008
+   0x0804917f <+25>:	e8 bc fe ff ff     	call   0x8049040 <puts@plt>
+   0x08049184 <+30>:	83 c4 10           	add    esp,0x10
+   0x08049187 <+33>:	b8 00 00 00 00     	mov    eax,0x0
+   0x0804918c <+38>:	8b 4d fc           	mov    ecx,DWORD PTR [ebp-0x4]
+   0x0804918f <+41>:	c9                 	leave
+   0x08049190 <+42>:	8d 61 fc           	lea    esp,[ecx-0x4]
+   0x08049193 <+45>:	c3                 	ret
+End of assembler dump.
+
+=== C: _start ===
+Dump of assembler code for function _start:
+   0x08049050 <+0>:	31 ed              	xor    ebp,ebp
+   0x08049052 <+2>:	5e                 	pop    esi
+   0x08049053 <+3>:	89 e1              	mov    ecx,esp
+   0x08049055 <+5>:	83 e4 f0           	and    esp,0xfffffff0
+   0x08049058 <+8>:	50                 	push   eax
+   0x08049059 <+9>:	54                 	push   esp
+   0x0804905a <+10>:	52                 	push   edx
+   0x0804905b <+11>:	e8 19 00 00 00     	call   0x8049079 <_start+41>
+   0x08049060 <+16>:	81 c3 94 2f 00 00  	add    ebx,0x2f94
+   0x08049066 <+22>:	6a 00              	push   0x0
+   0x08049068 <+24>:	6a 00              	push   0x0
+   0x0804906a <+26>:	51                 	push   ecx
+   0x0804906b <+27>:	56                 	push   esi
+   0x0804906c <+28>:	8d 83 89 d0 ff ff  	lea    eax,[ebx-0x2f77]
+   0x08049072 <+34>:	50                 	push   eax
+   0x08049073 <+35>:	e8 b8 ff ff ff     	call   0x8049030 <__libc_start_main@plt>
+   0x08049078 <+40>:	f4                 	hlt
+   0x08049079 <+41>:	8b 1c 24           	mov    ebx,DWORD PTR [esp]
+   0x0804907c <+44>:	c3                 	ret
+   0x0804907d <+45>:	e9 e4 00 00 00     	jmp    0x8049166 <main>
+End of assembler dump.

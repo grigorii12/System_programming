@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -euo pipefail
+# Git должен прочитать ФИО; затем восстановить права 200.
+chmod u+rx 'Lab_1/Work/ФИО'
+trap "chmod 200 'Lab_1/Work/ФИО'" EXIT
+git add README.md .devcontainer/devcontainer.json run_lab_1.sh Lab_1
+git diff --cached --check
+git diff --cached --stat
+git commit -m 'Complete lab 1: Linux environment and file operations'
+git push origin main

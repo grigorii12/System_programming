@@ -1,0 +1,17 @@
+772 drwxrwx-w- Work/Контрольная работа №1!
+772 drwxrwx-w- Work/Лабораторная работа №1!
+200 d-w------- Work/ФИО
+-rw-rw-rw- codespace/codespace 125 2026-09-10 18:00 Text @1.gz
+-rw-rw-rw- codespace/codespace  28 2026-09-10 18:00 Text #3.gz
+Work/MyAchiv
+Work/Text #3
+Work/Text #3.gz
+Work/Text @1
+Work/Text @1.gz
+Work/Лабораторная работа №1!/Result_3
+Work/Лабораторная работа №1!/Text $2
+Work/ФИО/Result_two
+Work/ФИО/Text @1
+772 drwxrwx-w- Work/Контрольная работа №1!
+772 drwxrwx-w- Work/Лабораторная работа №1!
+200 d-w------- Work/ФИО

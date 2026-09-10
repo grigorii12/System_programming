@@ -1,0 +1,42 @@
++ set -euo pipefail
++ export LC_ALL=C.UTF-8
++ LC_ALL=C.UTF-8
++ umask 022
++ mkdir -p 'Work/Лабораторная работа №1!' Work/ФИО
++ mkdir 'Work/Контрольная работа №1!'
++ chmod 772 'Work/Контрольная работа №1!' 'Work/Лабораторная работа №1!'
++ chmod 200 Work/ФИО
++ stat -c '%a %A %n' 'Work/Контрольная работа №1!' 'Work/Лабораторная работа №1!' Work/ФИО
++ chmod u+rx Work/ФИО
++ touch 'Work/Text @1' 'Work/Text $2' 'Work/Text #3'
++ printf '%s\n' 'Птица говорун отличается умом и сообразительностью!' 'Отличается умом, отличается сообразительностью...'
++ cat 'Work/Text @1'
++ mv 'Work/Text $2' 'Work/Лабораторная работа №1!/'
++ cp 'Work/Text @1' Work/ФИО/
++ gzip -k 'Work/Text @1' 'Work/Text #3'
++ tar -cf Work/MyAchiv -C Work 'Text @1.gz' 'Text #3.gz'
++ tar -tvf Work/MyAchiv
++ head -n 1 'Work/Text @1'
++ printf '%s\n' 'Будь осторожен! Преступник вооружен!'
++ tac 'Work/Text @1'
++ mv Work/ФИО/Result_one Work/ФИО/Result_two
++ for item in 'Work/ФИО'/T*
++ [[ -d Work/ФИО/Text @1 ]]
++ [[ -f Work/ФИО/Text @1 ]]
++ cat 'Work/ФИО/Text @1'
++ uname -a
++ date --iso-8601=seconds
++ cmp 'Work/Text @1' 'Work/ФИО/Text @1'
++ cmp 'Work/Text @1' 'Work/Лабораторная работа №1!/Text $2'
+++ head -n 1 Work/ФИО/Result_two
++ test 'Отличается умом, отличается сообразительностью...' = 'Отличается умом, отличается сообразительностью...'
+++ tail -n 1 'Work/Text #3'
++ test 'Будь осторожен! Преступник вооружен!' = 'Будь осторожен! Преступник вооружен!'
++ gzip -t 'Work/Text @1.gz' 'Work/Text #3.gz'
++ find Work -type f -printf '%p\n'
++ sort
++ touch 'Work/Контрольная работа №1!/.gitkeep'
++ chmod 200 Work/ФИО
++ stat -c '%a %A %n' 'Work/Контрольная работа №1!' 'Work/Лабораторная работа №1!' Work/ФИО
++ mkdir Lab_1
++ mv sandbox Work Work_files Lab_1/

@@ -1,0 +1,123 @@
+#!/usr/bin/env bash
+set -euo pipefail
+export LC_ALL=C.UTF-8
+umask 022
+for p in Lab_1 sandbox Work Work_files; do test ! -e "$p" || { echo "Already exists: $p"; exit 1; }; done
+mkdir sandbox
+cat > sandbox/Прозоров.asm <<'ASM'
+; Linux x86 (32 бита), FASM, UTF-8.
+format ELF executable 3
+entry start
+segment readable executable
+start:
+    mov eax, 4 ; sys_write
+    mov ebx, 1 ; stdout
+    mov ecx, message
+    mov edx, message_length
+    int 0x80
+    mov eax, 1 ; sys_exit
+    xor ebx, ebx
+    int 0x80
+segment readable writeable
+message db 'Прозоров', 10, 'Григорий', 10, 'Дмитриевич', 10
+message_length = $ - message
+ASM
+cat > sandbox/C_version.c <<'C'
+#include <stdio.h>
+int main(void)
+{
+    printf("Прозоров\nГригорий\nДмитриевич\n");
+    return 0;
+}
+C
+cat > sandbox/Build_commands <<'BUILD'
+set -euo pipefail
+export LC_ALL=C.UTF-8
+cd sandbox
+uname -a
+date --iso-8601=seconds
+dpkg-query -W gcc gdb fasm mc gcc-multilib libc6-dev-i386
+fasm Прозоров.asm Прозоров
+chmod +x Прозоров
+gcc -m32 -g -O0 -fno-pie -no-pie -Wall -Wextra -Werror C_version.c -o C_version
+file Прозоров C_version
+./Прозоров > Assembly_output.txt
+./C_version > C_output.txt
+printf 'Прозоров\nГригорий\nДмитриевич\n' > Expected_output.txt
+cmp Expected_output.txt Assembly_output.txt
+cmp Expected_output.txt C_output.txt
+cat Assembly_output.txt
+entry=$(readelf -h Прозоров | awk '/Entry point address:/ {print $4}')
+{
+    printf '=== FASM: Прозоров (весь код, 31 байт) ===\n'
+    gdb -q -nx -batch -ex 'set debuginfod enabled off' -ex 'set disassembly-flavor intel' -ex starti -ex "disassemble /r $entry,$entry+31" ./Прозоров
+    printf '\n=== C: main ===\n'
+    gdb -q -nx -batch -ex 'set debuginfod enabled off' -ex 'set disassembly-flavor intel' -ex 'disassemble /r main' ./C_version
+    printf '\n=== C: _start ===\n'
+    gdb -q -nx -batch -ex 'set debuginfod enabled off' -ex 'set disassembly-flavor intel' -ex 'disassemble /r _start' ./C_version
+} > Disassemble
+BUILD
+bash -x sandbox/Build_commands > sandbox/Build_output.txt 2> sandbox/Build_trace.txt
+cat > Work_files <<'WORK'
+#!/usr/bin/env bash
+# Исполняемый журнал всех команд раздела «Работа с файлами».
+set -euo pipefail
+export LC_ALL=C.UTF-8
+umask 022
+# 1. Имена папок буквально из задания.
+mkdir -p 'Work/Лабораторная работа №1!' 'Work/ФИО'
+# 2. Название в этом пункте отличается: создаём обе папки.
+mkdir 'Work/Контрольная работа №1!'
+chmod 772 'Work/Контрольная работа №1!' 'Work/Лабораторная работа №1!'
+chmod 200 'Work/ФИО'
+stat -c '%a %A %n' 'Work/Контрольная работа №1!' 'Work/Лабораторная работа №1!' 'Work/ФИО'
+# Для последующих операций внутри ФИО временно нужны r и x.
+chmod u+rx 'Work/ФИО'
+# 3.
+touch 'Work/Text @1' 'Work/Text $2' 'Work/Text #3'
+# 4.
+printf '%s\n' 'Птица говорун отличается умом и сообразительностью!' 'Отличается умом, отличается сообразительностью...' > 'Work/Text @1'
+# 5.
+cat 'Work/Text @1' > 'Work/Text $2'
+# 6.
+mv 'Work/Text $2' 'Work/Лабораторная работа №1!/'
+cp 'Work/Text @1' 'Work/ФИО/'
+# 7. -k сохраняет оригиналы для следующих пунктов.
+gzip -k 'Work/Text @1' 'Work/Text #3'
+tar -cf 'Work/MyAchiv' -C Work 'Text @1.gz' 'Text #3.gz'
+tar -tvf 'Work/MyAchiv'
+# 8.
+head -n 1 'Work/Text @1' >> 'Work/Text #3'
+printf '%s\n' 'Будь осторожен! Преступник вооружен!' >> 'Work/Text #3'
+# 9. Обратный порядок строк.
+tac 'Work/Text @1' > 'Work/ФИО/Result_one'
+# 10.
+mv 'Work/ФИО/Result_one' 'Work/ФИО/Result_two'
+# 11. Файлы и содержимое папок с именами на T.
+for item in 'Work/ФИО'/T*; do
+    if [[ -d "$item" ]]; then
+        find "$item" -type f -exec cat {} +
+    elif [[ -f "$item" ]]; then
+        cat "$item"
+    fi
+done > 'Work/Лабораторная работа №1!/Result_3'
+# 12.
+uname -a >> 'Work/Лабораторная работа №1!/Result_3'
+date --iso-8601=seconds >> 'Work/Лабораторная работа №1!/Result_3'
+# Проверки до восстановления прав.
+cmp 'Work/Text @1' 'Work/ФИО/Text @1'
+cmp 'Work/Text @1' 'Work/Лабораторная работа №1!/Text $2'
+test "$(head -n 1 'Work/ФИО/Result_two')" = 'Отличается умом, отличается сообразительностью...'
+test "$(tail -n 1 'Work/Text #3')" = 'Будь осторожен! Преступник вооружен!'
+gzip -t 'Work/Text @1.gz' 'Work/Text #3.gz'
+find Work -type f -printf '%p\n' | sort
+# Git не хранит пустые каталоги.
+touch 'Work/Контрольная работа №1!/.gitkeep'
+chmod 200 'Work/ФИО'
+stat -c '%a %A %n' 'Work/Контрольная работа №1!' 'Work/Лабораторная работа №1!' 'Work/ФИО'
+mkdir Lab_1
+mv sandbox Work Work_files Lab_1/
+WORK
+bash -x Work_files > Work_output.txt 2> Work_trace.txt
+mv Work_output.txt Work_trace.txt Lab_1/sandbox/
+printf 'LAB1_EXECUTION_OK\n'
